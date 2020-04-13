@@ -30,8 +30,8 @@ Things you will learn by completing this project:
 * How to document and write a report of your work.
 
 ## Project environment and requirements
-Release: emr-5.20.0 or later
-Applications: Spark: Spark 2.4.0 on Hadoop 2.8.5 YARN with Ganglia 3.7.2 and Zeppelin 0.8.0
-Instance type: m3.xlarge
-Number of instance: 3
-EC2 key pair: Proceed without an EC2 key pair or feel free to use one if you'd like
+* Release: emr-5.20.0 or later
+* Applications: Spark: Spark 2.4.0 on Hadoop 2.8.5 YARN with Ganglia 3.7.2 and Zeppelin 0.8.0
+* Instance type: m3.xlarge
+* Number of instance: 3
+* EC2 key pair: Proceed without an EC2 key pair or feel free to use one if you'd like
