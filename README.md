@@ -164,7 +164,7 @@ This model is predicting quite bad. It has wrongly labeled customer as not churn
 
 Model 2 — Decision Tree
 ```
-pricesion is 0.61, recall is 0.85, f1 score is 0.71
+pricesion is 0.69, recall is 0.85, f1 score is 0.76
 ```
 After we used Decision Tree, we have achieved above score. This means we are classifying more customer as churn more than we should. Thus, we have a high recall but low precision. The overall score is 0.71. This is still considered to be low performance comparing to our unbalanced data in a 23% churn prediction rate.
 
