@@ -108,19 +108,20 @@ Using spark function dropna()
 
 ## Implementation — Feature
 What are the potential reason for churn and incorporate these features in the model to predict the customer churn:
-Customer taste and availability of music
-
-* If the customer liked/ listened to most popular music (played by a large number of people). Then this customer more likely finds songs he/she likes on the platform. This needs then below features:
-* Song total played by the number of times
-* Song total played by the number of people
-Customer lock-in (if the customer has spent already a lot of time in Sparkify, it becomes difficult to change platform.)
-* How many days have the customer been with the platform (Max timestamp — min timestamp)
-* How many active days the customer with the platform (Count distinct timestamp days)
-* Days active/ Days total
-* Customer played songs total
-Other existing features to convert to numeric
-* Gender
-* Free or Paid customer
+* Customer taste and availability of music
+  * If the customer liked/ listened to most popular music (played by a large number of people). Then this customer more likely finds songs he/she likes on the platform. This needs then below features:
+  * Song total played by the number of times
+  * Song total played by the number of people
+* Customer lock-in (if the customer has spent already a lot of time in Sparkify, it becomes difficult to change platform.)
+  * How many days have the customer been with the platform (Max timestamp — min timestamp)
+  * How many active days the customer with the platform (Count distinct timestamp days)
+  * Days active/ Days total
+  * Customer played songs total
+* Other existing features to convert to numeric
+  * Gender
+  * Free or Paid customer
+  * Number of Thumb ups
+  * Number of Thumb downs
 
 ## Implementation — Model
 
@@ -137,9 +138,56 @@ For our question, we should choose Spark ML models for classification into two c
 We thus tried to implement from the sequence introduced above from Logistic regression.
 
 ## Result and Refinement
-Model 1 — Logistic regression is not providing meaningful output.
+Features we fed into the model:
+
+```
+['avg_nbr_of_played_times',
+ 'avg_nbr_of_played_users',
+ 'gender',
+ 'level_conv',
+ 'days_customer_active',
+ 'played_songs_total',
+ 'played_sessions_total',
+ 'played_activity_total',
+ 'thumb_ups',
+ 'thumb_downs',
+ 'days_customer_with_sparkify',
+ 'days_active_vs_days_total']
+ ```
+
+Model 1 — Logistic regression we have tried grid search with alpha (0.5, 1.0) and lambda (0.5, 1.0). However it seems the model has not yet converged thus we have tried another set of parameters alpha (0.1, 0.3) and lambda (0.1, 0.3). Due to the slowness of the machine, we could not really perform too complicated grid search.
+
+```
+pricesion is 1.0, recall is 0.15, f1 score is 0.27
+```
+This model is predicting quite bad. It has wrongly labeled customer as not churn. Thus the precision is high but recall is very low.
+
 Model 2 — Decision Tree
 ```
 pricesion is 0.61, recall is 0.85, f1 score is 0.71
 ```
-This is still considered to be low performance comparing to our unbalanced data in a 23% churn prediction rate.
+After we used Decision Tree, we have achieved above score. This means we are classifying more customer as churn more than we should. Thus, we have a high recall but low precision. The overall score is 0.71. This is still considered to be low performance comparing to our unbalanced data in a 23% churn prediction rate.
+
+## Conclusions
+Our project is to help Sparkify predict customer churn and improve services to reduce churn rate. After exploring data, modeling for predictions, and evaluating the performance of our model, we came into conclusions:
+* The Sparkify platform benchmarking to other companies like Spotify in Churn rate is 3-4% higher. This indicates we are working on meaningful improvements for the company.
+* We have provided meaningful data processing and transformation pipeline using spark SQL functions. This largely leveraged MapReduce methodology to produce features using multiple map-reduced attributes to feed into our model.
+* The features we developed to help with the churn prediction is providing meaningful output from the model.
+* We have implemented two machine learning models from PySpark ML library and we have chosen one with better performance.
+
+This project will help to shape the future steps in discovering improvement factors to better minimizing customer churn.
+
+## Challenges
+The machine learning approach and result accuracy are not very satisfying. This means we could not use the input features to explain well the customer churn behavior. It may require further engineering on the feature or even bringing in new datasets to answer the question. In summary, churn activities are highly human-related. There are many factors influencing customer decisions like competitor discounting, music availability in total, internet speed, customer listening pattern. All of these are outside of our dataset in our current modeling.
+
+
+## Future work and Improvements
+* Deploy the model on AWS EMR to test performance on larger data.
+* Discover external data on scenarios where a person listens to Sparkify. This may have a potentially strong impact on the churn. (For example, if a person only listens to music on Sparkify during commuting. And due to the global pandemic, he/she does not need to commute to work. Then we could expect high churn.)
+
+## Acknowledgments & References
+* Thanks to Udacity teaching and reviewing team. I enjoyed the course a lot. link: https://www.udacity.com/course/data-scientist-nanodegree--nd025
+* Some Customer Churn analysis blog posts that helped me:
+  * https://mapr.com/blog/churn-prediction-pyspark-using-mllib-and-ml-packages/
+  * https://spark.apache.org/docs/latest/ml-classification-regression.html
+  * https://www.statista.com/statistics/241424/dau-and-mau-of-spotifys-facebook-app/
